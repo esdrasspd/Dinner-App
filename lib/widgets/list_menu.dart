@@ -1,18 +1,13 @@
 import 'package:contact/providers/db_provider.dart';
 import 'package:flutter/material.dart';
-
+import 'alert.dart';
 import '../models/models.dart';
 
-class ListMenu extends StatefulWidget {
+class ListMenu extends StatelessWidget {
   const ListMenu({
     Key? key,
   }) : super(key: key);
 
-  @override
-  State<ListMenu> createState() => _ListMenuState();
-}
-
-class _ListMenuState extends State<ListMenu> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<Menu>> (
@@ -22,7 +17,7 @@ class _ListMenuState extends State<ListMenu> {
          return const Center(child: Text('Cargando datos...'),);
        }
        return snapshot.data!.isEmpty
-           ? const Center(child: Text('No hay ningún alimento en la lista...'))
+           ? const Center(child: Text('No hay ningún platillo en la lista...'))
        
        :ListView(
          children:
@@ -34,14 +29,8 @@ class _ListMenuState extends State<ListMenu> {
                      title: Text('Nombre del platillo: '+menu.nombre),
                      subtitle: Text('Código: '+ menu.codigo +'\nPrecio: ${ menu.precio }'+'\nFamilia: '+ menu.familia!),
                      onLongPress: () {
-                       setState(() {
-                         
-                         DBProvider.db.delete(menu.id!);
-                       });
-                     },
-                     onTap: (() {
-                      Navigator.pushNamed(context, 'input_screen', arguments: menu);
-                     }),
+                       Alert.alert.displayDialogIOS(context, '¿Desea borrar el platillo?', 'Está a punto de borrar el platillo seleccionado', DBProvider.db.delete(menu.id!));
+                     }
                    ),
                  ],
              );

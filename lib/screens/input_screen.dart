@@ -1,4 +1,5 @@
 import 'package:contact/providers/db_provider.dart';
+import 'package:contact/widgets/alert.dart';
 import 'package:contact/widgets/widgets.dart';
 import 'package:contact/models/menu.dart';
 import 'package:flutter/material.dart';
@@ -30,16 +31,10 @@ class _InputScreenState extends State<InputScreen> {
     String codeTable;
     String nameTable;
     double priceTable;
-    String? familyTable;
+    String familyTable;
     
 
 
-    final Map<String, String> formValues = {
-      'code':     'AAA123',
-      'name':     'Caldo de pollo',
-      'price':   '150.00',
-      'family':  'Desayuno',
-    };
 
     final List<String> familyList = [
       'Desayuno',
@@ -72,13 +67,20 @@ class _InputScreenState extends State<InputScreen> {
                   items: familyList.map((value) => DropdownMenuItem(
                     child: Text(value),
                     value: value)).toList(),
+                  validator: (value) {
+                    if(value == null)
+                    {
+                      return'Este campo es requerdido';
+                    }
+                  },
                   onChanged: (value) {
                     setState(() {
                   selectedValue = value!;
-                  print(selectedValue);
                   });        
               },
               value: selectedValue,
+              
+              
       decoration: const InputDecoration(
         icon: Icon(Icons.dining_rounded)
       ),
@@ -92,18 +94,18 @@ class _InputScreenState extends State<InputScreen> {
                       width: 100,
                       child: Center(child: Text('Guardar'))
                       ),
-                    onPressed: () async {
+                    onPressed: () {
 
-                      codeTable = codeController.text;
-                      nameTable = nameController.text;
-                      priceTable = double.parse(priceController.text);
-                      familyTable = selectedValue;
-                      print(familyTable);
-
-
-                          await DBProvider.db.insert(
-                            Menu(codigo: codeTable, nombre: nameTable, precio: priceTable, familia: familyTable!),
-                          );
+                      if(_formKey.currentState!.validate()){
+                       codeTable = codeController.text;
+                       nameTable = nameController.text;
+                       priceTable = double.parse(priceController.text);
+                       familyTable = selectedValue!;
+        
+                         Alert.alert.displayDialogIOS(context, '¿Desea guardar los datos?', 'Está a punto de guardar los datos de un platillo...', 
+                         DBProvider.db.insert(Menu(codigo: codeTable, nombre: nameTable, precio: priceTable, familia: familyTable)),
+                         );
+                      }
                     },
                 ),
               ],

@@ -1,19 +1,18 @@
-import 'dart:convert';
-import 'dart:ffi';
+
 
 class Menu {
   int? id;
   String codigo;
   String nombre;
   double precio;
-  String? familia;
+  String familia;
 
   Menu({
     this.id,
     required this.codigo,
     required this.nombre,
     required this.precio,
-    this.familia
+    required this.familia
   });
 
   factory Menu.fromJson(Map<String, dynamic> json) => Menu( //si se reciben un mapa lo tomará y creará una instancia de carta

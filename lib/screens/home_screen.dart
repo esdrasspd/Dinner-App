@@ -9,6 +9,7 @@ class HomeScreen extends StatefulWidget {
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
+  
 }
 
 class _HomeScreenState extends State<HomeScreen> {
@@ -20,6 +21,7 @@ class _HomeScreenState extends State<HomeScreen> {
         title: const Text('Carta del Restaurante'),
       ),
       body: const Center(
+        
          child: ListMenu() 
          
       ),
